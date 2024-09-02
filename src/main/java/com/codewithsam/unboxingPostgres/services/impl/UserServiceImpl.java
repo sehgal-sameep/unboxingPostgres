@@ -7,6 +7,7 @@ import com.codewithsam.unboxingPostgres.repositories.UserRepo;
 import com.codewithsam.unboxingPostgres.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +22,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 //
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = this.dtoToUser(userDto);
-//        String pword = user.getPassword();
-//        String encodedPassword = this.passwordEncoder.encode(pword);
-//        user.setPassword(encodedPassword);
+        String pword = user.getPassword();
+        String encodedPassword = this.passwordEncoder.encode(pword);
+        user.setPassword(encodedPassword);
         User savedUser = this.userRepo.save(user);
         return this.userToDto(savedUser);
     }

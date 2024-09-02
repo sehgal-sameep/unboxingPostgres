@@ -6,6 +6,7 @@ import com.codewithsam.unboxingPostgres.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer userId) {
         this.userService.deleteUsers(userId);
         return new ResponseEntity<ApiResponse>(new ApiResponse("User deleted successfully", true), HttpStatus.OK);
@@ -33,6 +35,7 @@ public class UserController {
 
     //GET- get user
     @GetMapping("/users/")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(this.userService.getAllUsers());
     }
