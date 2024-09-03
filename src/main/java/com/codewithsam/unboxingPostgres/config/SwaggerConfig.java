@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         email = "sehgal.sameep21@gmail.com",
                         url = "https://www.linkedin.com/in/sameepsehgal/"
                 ),
-                description = "This interface provides documentation of various REST APIs to explore Postgres using SpringBoot. As the APIs are secured, add JWT Bearer token in the AUTHORIZE section( Get JWT by entering email and password using LOGIN API. NOTE: ADMIN -> Read/Write on User Management, SALES -> Read/Write on Customer & Bill Management, ACCOUNTANT -> READ Only on Bill Management",
+                description = "This interface provides documentation of various REST APIs to explore Postgres using SpringBoot. As the APIs are secured, add JWT Bearer token in the AUTHORIZE section( Get JWT by entering email and password using LOGIN API. NOTE: ADMIN -> Read/Write on User Management, SALES -> Read/Write on Customer & Bill Management, ACCOUNTANT -> READ Only on Bill & Payroll Management, HR -> Read/Write on Payroll Management",
                 title = "API Documentation of UnboxingPostgres",
                 version = "1.0"
         ),
