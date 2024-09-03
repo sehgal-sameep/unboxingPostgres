@@ -1,8 +1,10 @@
 package com.codewithsam.unboxingPostgres.services.impl;
 
+import com.codewithsam.unboxingPostgres.entities.Role;
 import com.codewithsam.unboxingPostgres.entities.User;
 import com.codewithsam.unboxingPostgres.exceptions.ResourceNotFoundException;
 import com.codewithsam.unboxingPostgres.payloads.UserDto;
+import com.codewithsam.unboxingPostgres.repositories.RoleRepo;
 import com.codewithsam.unboxingPostgres.repositories.UserRepo;
 import com.codewithsam.unboxingPostgres.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,12 +28,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepo roleRepo;
+
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = this.dtoToUser(userDto);
         String pword = user.getPassword();
         String encodedPassword = this.passwordEncoder.encode(pword);
         user.setPassword(encodedPassword);
+
+        Set<Role> roles = userDto.getRoles().stream()
+                .map(roleName -> roleRepo.findByName(roleName).orElseThrow(() ->
+                        new RuntimeException("Role not found: " + roleName)))
+                .collect(Collectors.toSet());
+        user.setRoles(roles);
+
         User savedUser = this.userRepo.save(user);
         return this.userToDto(savedUser);
     }

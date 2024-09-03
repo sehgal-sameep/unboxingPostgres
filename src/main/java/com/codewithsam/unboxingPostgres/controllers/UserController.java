@@ -20,6 +20,7 @@ public class UserController {
 
     //POST- create user
     @PostMapping("/user/")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser( @RequestBody UserDto userDto)
     {
         UserDto createdUserDto= this.userService.createUser(userDto);
@@ -35,12 +36,13 @@ public class UserController {
 
     //GET- get user
     @GetMapping("/users/")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(this.userService.getAllUsers());
     }
 
     @GetMapping("/users/{userId}")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<UserDto> getUserById(@PathVariable Integer userId) {
         return ResponseEntity.ok(this.userService.getUserById(userId));
     }
